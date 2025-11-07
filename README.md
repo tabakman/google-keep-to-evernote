@@ -2,13 +2,16 @@
 
 This script converts your **Google Keep archive** into Evernote-compatible `.enex` files — with support for:
 
+- 📅 **Chronological sorting** (oldest notes first, based on JSON timestamps)
 - 🖼 Embedded images (inline in note content)
 - ☑️ Checklists (converted to Evernote-style todos)
 - 📌 Pinned notes (tagged as `pinned`)
+- 📁 Archived notes (tagged as `archived`)
 - 🏷 Labels → Tags
 - 📅 Created/modified timestamps
 - 🧾 UTF-8/emoji compatibility
-- 📂 Output split into multiple `.enex` files (chunks of 100 notes)
+- 📂 Output split into multiple `.enex` files (configurable chunk size)
+- 🎯 Command-line interface with flexible options
 
 Tested with:
 - 5,000+ notes
@@ -29,7 +32,7 @@ Tested with:
 👉 Copy **all of those files (flat)** into the `keep_source/` folder in this repo.
 
 > Requires `beautifulsoup4`.  
-> See [Troubleshooting](#troubleshooting) if you hit an import error.
+> See [Troubleshooting](#%EF%B8%8F-troubleshooting) if you hit an import error.
 
 ---
 
@@ -40,16 +43,51 @@ Tested with:
 2. **Run the converter**:
 
 ```bash
+# Basic usage (uses default directories)
 python google-keep-to-evernote.py
+
+# Or with custom options
+python google-keep-to-evernote.py -s my_keep_export -o my_output --size 200
 ```
 
 It will:
 
-- Ask if you'd like to clear the output folder
+- Ask if you'd like to clear the output folder (or use `--clear-output` to skip the prompt)
 - Convert your notes to Evernote `.enex` format
+- **Sort notes chronologically** (oldest first in `output_001.enex`)
 - Embed images and todos
 - Split the result into multiple `output_###.enex` files in `evernote_output/`
 - Log skipped notes or failed images to `migration_log.txt`
+
+### Command-Line Options
+
+```bash
+python google-keep-to-evernote.py [OPTIONS]
+
+Options:
+  -s, --source DIR          Source directory (default: keep_source)
+  -o, --output DIR          Output directory (default: evernote_output)
+  --size N                  Notes per file (default: 100)
+  --no-sort                 Don't sort chronologically
+  --clear-output            Clear output folder without prompting
+  -h, --help                Show help message
+```
+
+**Examples:**
+
+```bash
+# Use default settings
+python google-keep-to-evernote.py
+
+# Custom directories and 200 notes per file
+python google-keep-to-evernote.py -s my_keep -o my_enex --size 200
+
+# Keep original order (don't sort by date)
+python google-keep-to-evernote.py --no-sort
+
+# Auto-clear output folder
+python google-keep-to-evernote.py --clear-output
+```
 
 ---
 
@@ -57,9 +95,9 @@ It will:
 
 ```
 .
-├── google-keep-to-evernote.py         # ← the script
-├── keep_source/            # ← your Keep HTML/JSON/image files go here
-├── evernote_output/        # ← final ENEX files + log
+├── google-keep-to-evernote.py         # ← the main script
+├── keep_source/                       # ← your Keep HTML/JSON/image files go here
+├── evernote_output/                   # ← final ENEX files + log
 ```
 
 ---
@@ -69,14 +107,17 @@ It will:
 | Feature                 | Supported |
 |------------------------|-----------|
 | Note content           | ✅
-| Timestamps             | ✅
+| JSON-first timestamps  | ✅
+| Chronological sorting  | ✅
 | Tags / labels          | ✅
 | Checklists             | ✅
 | Embedded images        | ✅
 | Pinned notes           | ✅ (tagged)
+| Archived notes         | ✅ (tagged)
 | Migration log          | ✅
 | Evernote-ready `.enex` | ✅
-| Chunked output         | ✅ (100 notes per file)
+| Configurable chunking  | ✅
+| Command-line interface | ✅
 
 ---
 
@@ -99,6 +140,13 @@ python google-keep-to-evernote.py
 ```
 
 If you're using a virtual environment, make sure it’s activated before installing.
+
+---
+
+## 👥 Credits
+
+- **Tal Tabakman** ([@tabakman](https://github.com/tabakman)) - Original creator
+- **StrayGuru** ([@StrayGuru](https://github.com/StrayGuru)) - Chronological sorting & JSON-first date extraction
 
 ---
 
