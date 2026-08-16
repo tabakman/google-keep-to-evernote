@@ -330,7 +330,7 @@ def create_enex_chunks(source_dir, output_dir, chunk_size=100, sort_chronologica
             f.write('<!DOCTYPE en-export SYSTEM "http://xml.evernote.com/pub/evernote-export2.dtd">\n')
             f.write(f'<en-export export-date="{export_date}" application="KeepToEvernoteScript" version="2.0">\n')
             for note in chunk_notes:
-                f.write(note)
+                f.write(note.encode('utf-8', 'replace').decode('utf-8'))
             f.write('\n</en-export>')
         
         print(f"[OK] Wrote {chunk_filename} with {len(chunk_notes)} notes")
