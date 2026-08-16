@@ -147,6 +147,7 @@ If you're using a virtual environment, make sure it’s activated before install
 
 - **Tal Tabakman** ([@tabakman](https://github.com/tabakman)) - Original creator
 - **StrayGuru** ([@StrayGuru](https://github.com/StrayGuru)) - Chronological sorting & JSON-first date extraction
+- **John Peach** ([@johnpeach](https://github.com/johnpeach)) - Fixed UTF-8 conversion errors
 
 ---
 
